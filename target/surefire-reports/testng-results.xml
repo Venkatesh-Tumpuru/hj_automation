@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite" duration-ms="34530" started-at="2024-01-22T05:41:52 EST" finished-at="2024-01-22T05:42:27 EST">
+    <groups>
+      <group name="cucumber">
+        <method signature="AbstractTestNGCucumberTests.runScenario(io.cucumber.testng.PickleWrapper,io.cucumber.testng.FeatureWrapper)[pri:0, instance:com.remco.testRunner.RemcoHJTestRunner@31610302]" name="runScenario" class="io.cucumber.testng.AbstractTestNGCucumberTests"/>
+      </group> <!-- cucumber -->
+    </groups>
+    <test name="Test" duration-ms="34530" started-at="2024-01-22T05:41:52 EST" finished-at="2024-01-22T05:42:27 EST">
+      <class name="com.remco.testRunner.RemcoHJTestRunner">
+        <test-method status="PASS" signature="setUpClass()[pri:0, instance:com.remco.testRunner.RemcoHJTestRunner@31610302]" name="setUpClass" is-config="true" duration-ms="673" started-at="2024-01-22T05:41:52 EST" finished-at="2024-01-22T05:41:53 EST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUpClass -->
+        <test-method status="PASS" signature="runScenario(io.cucumber.testng.PickleWrapper,io.cucumber.testng.FeatureWrapper)[pri:0, instance:com.remco.testRunner.RemcoHJTestRunner@31610302]" name="runScenario" duration-ms="33763" started-at="2024-01-22T05:41:53 EST" description="Runs Cucumber Scenarios" data-provider="scenarios" finished-at="2024-01-22T05:42:27 EST">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA["Login to the HighJump Application with the correct credentials."]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA["Optional[This feature is to validate all the scenarios related to Home Page]"]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- runScenario -->
+        <test-method status="PASS" signature="tearDownClass()[pri:0, instance:com.remco.testRunner.RemcoHJTestRunner@31610302]" name="tearDownClass" is-config="true" duration-ms="6" started-at="2024-01-22T05:42:27 EST" finished-at="2024-01-22T05:42:27 EST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownClass -->
+      </class> <!-- com.remco.testRunner.RemcoHJTestRunner -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+</testng-results>
