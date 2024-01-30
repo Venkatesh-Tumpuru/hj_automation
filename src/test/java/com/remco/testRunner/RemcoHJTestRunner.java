@@ -10,7 +10,7 @@ import io.cucumber.testng.CucumberOptions;
 		features	=	"src/test/java/com/remco/features/",
 		glue		=	{"com/remco/stepDefinitions"},
 		plugin		=	{"pretty"},
-		tags		=	"@login",
+		tags		=	"",
 		monochrome	= 	true
 		)
 @Test
