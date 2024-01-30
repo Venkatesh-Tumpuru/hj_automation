@@ -22,8 +22,6 @@ public class BasePage_Remco{
 
 		String browserName;
 		browserName=(System.getProperty("browser")!=null)? System.getProperty("browser"):getPropValue("browser");
-		System.out.println("Value extracted from jenkins : "+System.getProperty("browser"));
-		System.out.println("Browser Name : "+browserName);
 		boolean isHeadLess = Boolean.parseBoolean(getPropValue("headless"));
 
 		switch(browserName) {
