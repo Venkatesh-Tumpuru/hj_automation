@@ -85,6 +85,11 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.19.1</version>
 					<configuration>
+						<systemPropertyVariables>
+							<browser>${Dbrowser}</browser>
+							<username>${Dusername}</username>
+							<password>${Dpassword}</password>
+						</systemPropertyVariables>
 						<suiteXmlFiles>
 							<suiteXmlFile>testng.xml</suiteXmlFile>
 						</suiteXmlFiles>

@@ -19,7 +19,8 @@ public class BasePage_Remco{
 	
 	public void launchBrowser() throws Exception {
 		Playwright 	playwright	= Playwright.create();
-		String browserName		= getPropValue("browser");
+		String browserName		;
+		browserName=(System.getProperty("browser")!=null)? System.getProperty("browser"):getPropValue("browser");
 		boolean isHeadLess		= Boolean.parseBoolean(getPropValue("headless"));
 		switch(browserName) {
 		case "chrome":
