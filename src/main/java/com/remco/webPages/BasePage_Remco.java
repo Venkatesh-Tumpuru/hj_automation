@@ -42,7 +42,8 @@ public class BasePage_Remco{
 	}
 	
 	public void loadUrl() throws Exception {
-		String appUrl	=	getPropValue("url");
+		String appUrl;
+		appUrl=(System.getProperty("url")!=null)? System.getProperty("url"):getPropValue("url");
 		page.navigate(appUrl);
 	}
 	

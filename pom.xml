@@ -89,6 +89,7 @@
 							<browser>${Dbrowser}</browser>
 							<username>${Dusername}</username>
 							<password>${Dpassword}</password>
+							<url>${Durl}</url>
 						</systemPropertyVariables>
 						<suiteXmlFiles>
 							<suiteXmlFile>testng.xml</suiteXmlFile>
