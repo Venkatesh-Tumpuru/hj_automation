@@ -3,7 +3,6 @@ package com.remco.webPages;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
-
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
