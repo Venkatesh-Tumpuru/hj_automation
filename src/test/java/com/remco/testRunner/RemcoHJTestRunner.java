@@ -11,7 +11,7 @@ import io.cucumber.testng.CucumberOptions;
 		glue		=	{"com/remco/stepDefinitions"},
 		plugin		=	{"pretty",
 						 "json:target/cucumber-reports/Cucumber.json",
-						 "html:target/cucmber-reports"},
+						 "html:target/cucumber-reports"},
 		tags		=	"",
 		monochrome	= 	true
 		)
