@@ -1,0 +1,65 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "start_timestamp": "2024-02-05T11:07:44.514Z",
+        "line": 4,
+        "name": "Login to the HighJump Application with the correct credentials.",
+        "description": "",
+        "id": "this-feature-is-to-validate-all-the-scenarios-related-to-home-page;login-to-the-highjump-application-with-the-correct-credentials.",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 21458000000,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User launches HighJump application",
+            "match": {
+              "location": "com.remco.stepDefinitions.HomePageSteps.launchApplication()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 386000000,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "user login into the application",
+            "match": {
+              "location": "com.remco.stepDefinitions.HomePageSteps.userLogin()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 8613000000,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "user logout from the application",
+            "match": {
+              "location": "com.remco.stepDefinitions.HomePageSteps.userLogout()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@login"
+          }
+        ]
+      }
+    ],
+    "name": "This feature is to validate all the scenarios related to Home Page",
+    "description": "",
+    "id": "this-feature-is-to-validate-all-the-scenarios-related-to-home-page",
+    "keyword": "Feature",
+    "uri": "file:src/test/java/com/remco/features/homepage.feature",
+    "tags": []
+  }
+]
