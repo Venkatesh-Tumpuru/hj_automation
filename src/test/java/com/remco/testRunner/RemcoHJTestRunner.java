@@ -9,7 +9,9 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
 		features	=	"src/test/java/com/remco/features/",
 		glue		=	{"com/remco/stepDefinitions"},
-		plugin		=	{"pretty"},
+		plugin		=	{"pretty",
+						 "json:target/cucumber-reports/Cucumber.json",
+						 "html:target/cucmber-reports"},
 		tags		=	"",
 		monochrome	= 	true
 		)
