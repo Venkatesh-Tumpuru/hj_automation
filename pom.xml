@@ -19,6 +19,14 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
+	<repositories>
+		<repository>  
+    			<id>AsposeJavaAPI</id>  
+    			<name>Aspose Java API</name>  
+    			<url>https://repository.aspose.com/repo/</url>  
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -32,6 +40,12 @@
 			<artifactId>testng</artifactId>
 			<version>7.4.0</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+	    		<groupId>com.aspose</groupId>
+	    		<artifactId>aspose-cells</artifactId>
+	    		<version>22.6</version>
 		</dependency>
 		
 		<dependency>
