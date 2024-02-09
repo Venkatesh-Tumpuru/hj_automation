@@ -1,18 +1,19 @@
 package com.remco.testRunner;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import org.testng.annotations.*;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.Test;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 //@RunWith(Cucumber.class)
 @CucumberOptions(
 		features	=	"src/test/java/com/remco/features/",
@@ -23,155 +24,136 @@ import java.nio.file.Paths;
 		monochrome	= 	true
 		)
 @Test
-public class RemcoHJTestRunner  extends AbstractTestNGCucumberTests{
-		@AfterSuite(alwaysRun=true)
-	    public  void generateHTMLReport() {
-	        // Read JSON data from file
-	        String jsonData = readJsonFromFile("target\\cucumber-reports\\cucumber.json");
-	        // Parse JSON data
-	        JsonArray jsonArray = JsonParser.parseString(jsonData).getAsJsonArray();
-	        // Process JSON data and generate HTML content
-	        String htmlContent = processJson(jsonArray);
-	        // Store HTML content into a file
-	        storeHtmlToFile(htmlContent, "target\\cucumber-reports\\cucumber.html");
-	    }
+public class RemcoHJTestRunner extends AbstractTestNGCucumberTests {
+    static String JSON_FILE_PATH = "target/cucumber-reports/cucumber.json";
+    static String HTML_FILE_PATH = "target/cucumber-reports/cucumber.html";
+@AfterSuite(alwaysRun=true)
+public void generateHTMLReport() {
+    try {
+        String filePath = JSON_FILE_PATH;
+        // Read JSON data from file
+        StringBuilder jsonBuilder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jsonBuilder.append(line);
+        }
+        reader.close();
 
-	    public  String readJsonFromFile(String filePath) {
-	        String jsonData = "";
-	        try {
-	            Path path = Paths.get(filePath);
-	            jsonData = new String(Files.readAllBytes(path));
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return jsonData;
-	    }
+        // Parse JSON data
+        String jsonData = jsonBuilder.toString();
+        JsonParser parser = new JsonParser();
+        JsonElement jsonElement = parser.parse(jsonData);
 
-	    public String processJson(JsonArray jsonArray) {
-	        StringBuilder htmlBuilder = new StringBuilder();
+        // Convert JSON element to JSON array
+        JsonArray features = jsonElement.getAsJsonArray();
+        StringBuilder htmlBuilder = new StringBuilder();
 
-	        // Initialize counts
-	        int totalScenarios = 0, totalScenariosPassed = 0, totalScenariosFailed = 0;
-	        int totalFeatures = 0, totalFeaturesPassed = 0, totalFeaturesFailed = 0;
-	        String scColor = "green";
-	        String frColor = "green";
+        int totalFeatures = features.size();
+        int totalPassedFeatures = 0;
+        int totalFailedFeatures = 0;
+        int totalScenarios = 0;
+        int totalPassedScenarios = 0;
+        int totalFailedScenarios = 0;
+        int totalSteps = 0;
+        int totalPassedSteps = 0;
+        int totalFailedSteps = 0;
 
-	        // Process each feature
-	        for (JsonElement jsonElement : jsonArray) {
-	            JsonObject feature = jsonElement.getAsJsonObject();
-	            boolean featurePassed = true; // Flag to track if all scenarios in the feature passed
+        for (JsonElement featureElement : features) {
+            JsonObject feature = featureElement.getAsJsonObject();
+            String featureName = feature.get("name").getAsString();
+            JsonArray scenarios = feature.getAsJsonArray("elements");
+            boolean hasFailedScenario = false;
 
-	            String featureName = feature.get("name").getAsString();
-	            String featureStatus = "Passed"; // Default feature status
+            htmlBuilder.append("<table border='1' style='border-collapse: collapse;'>\n");
+            htmlBuilder.append("<thead><tr>");
+            boolean hasFailedStepInFeature = false; // Flag to check if any step has failed in the feature
+            for (JsonElement scenarioElement : scenarios) {
+                JsonObject scenario = scenarioElement.getAsJsonObject();
+                JsonArray steps = scenario.getAsJsonArray("steps");
+                for (JsonElement stepElement : steps) {
+                    JsonObject step = stepElement.getAsJsonObject();
+                    JsonObject result = step.getAsJsonObject("result");
+                    totalSteps++;
+                    String status = result.get("status").getAsString();
+                    if (status.equalsIgnoreCase("failed")) {
+                        hasFailedStepInFeature = true;
+                        totalFailedSteps++;
+                        break; // No need to check further steps if one has already failed
+                    }
+                }
+                if (hasFailedStepInFeature) {
+                    break; // No need to check further scenarios if one has already failed
+                }
+            }
+            // Set background color of feature header based on whether any scenario has failed
+            String featureHeaderColor = hasFailedStepInFeature ? "#F9502B" : "#2BF96D";
+            htmlBuilder.append("<th colspan='2' style='background-color: ").append(featureHeaderColor).append(";'>").append(featureName).append("</th>");
+            htmlBuilder.append("</tr></thead>\n");
+            htmlBuilder.append("<tbody>\n");
 
-	            // Process each scenario within the feature
-	            JsonArray scenarios = feature.getAsJsonArray("elements");
+            for (JsonElement scenarioElement : scenarios) {
+                JsonObject scenario = scenarioElement.getAsJsonObject();
+                String scenarioName = scenario.get("name").getAsString();
+                JsonArray steps = scenario.getAsJsonArray("steps");
+                boolean hasFailedStep = false;
 
-	            // Check if any scenario in the feature failed
-	            for (JsonElement scenarioElement : scenarios) {
-	                JsonObject scenario = scenarioElement.getAsJsonObject();
-	                JsonArray steps = scenario.getAsJsonArray("steps");
-	                for (JsonElement stepElement : steps) {
-	                    JsonObject step = stepElement.getAsJsonObject();
-	                    String status = step.getAsJsonObject("result").get("status").getAsString();
-	                    if (!status.equals("passed")) {
-	                        featurePassed = false; // Update feature status if any scenario fails
-	                        break;
-	                    }
-	                }
-	                if (!featurePassed) {
-	                    break;
-	                }
-	            }
+                htmlBuilder.append("<tr>");
+                htmlBuilder.append("<td>").append(scenarioName).append("</td>");
 
-	            // Update feature status based on scenario results
-	            totalFeatures++;
-	            if (featurePassed) {
-	                totalFeaturesPassed++;
-	            } else {
-	                totalFeaturesFailed++;
-	                featureStatus = "Failed";
-	                frColor = "red";
-	            }
+                for (JsonElement stepElement : steps) {
+                    JsonObject step = stepElement.getAsJsonObject();
+                    JsonObject result = step.getAsJsonObject("result");
+                    String status = result.get("status").getAsString();
+                    if (status.equalsIgnoreCase("failed")) {
+                        hasFailedStep = true;
+                        totalFailedSteps++;
+                    } else {
+                        totalPassedSteps++;
+                    }
+                }
 
-	            // Append feature HTML with appropriate styling
-	            htmlBuilder.append("<div class=\"feature\">");
-	            htmlBuilder.append("<div class=\"feature-name\">").append("<h4><p style=\"color:" + frColor + ";\">").append("Feature: ").append(featureName).append(" - ").append(featureStatus.toUpperCase()).append("</p></h4> </div>");
+                if (hasFailedStep) {
+                    totalFailedScenarios++;
+                    hasFailedScenario = true;
+                    // Set background color of scenario cell and status cell based on whether any step has failed
+                    htmlBuilder.append("<td style='background-color: #F9502B;'>FAILED</td>");
+                } else {
+                    totalPassedScenarios++;
+                    htmlBuilder.append("<td style='background-color: #2BF96D;'>PASSED</td>");
+                }
 
-	            // Process scenarios
-	            for (JsonElement scenarioElement : scenarios) {
-	                JsonObject scenario = scenarioElement.getAsJsonObject();
-	                String scenarioName = scenario.get("name").getAsString();
-	                String scenarioStatus = "Passed"; // Default scenario status
+                htmlBuilder.append("</tr>\n");
+            }
 
-	                // Process each step within the scenario
-	                JsonArray steps = scenario.getAsJsonArray("steps");
-	                for (JsonElement stepElement : steps) {
-	                    JsonObject step = stepElement.getAsJsonObject();
-	                    String status = step.getAsJsonObject("result").get("status").getAsString();
-	                    if (!status.equals("passed")) {
-	                        scenarioStatus = "Failed"; // Update scenario status if any step fails
-	                        scColor = "red";
-	                    }
-	                }
+            if (hasFailedScenario) {
+                totalFailedFeatures++;
+            } else {
+                totalPassedFeatures++;
+            }
 
-	                // Update scenario counts
-	                totalScenarios++;
-	                if (scenarioStatus.equals("Passed"))
-	                    totalScenariosPassed++;
-	                else
-	                    totalScenariosFailed++;
+            htmlBuilder.append("</tbody></table>\n");
+            htmlBuilder.append("</br>");
+            // Increment total scenarios count
+            totalScenarios += scenarios.size();
+        }
 
-	                // Append scenario HTML
-	                htmlBuilder.append("<div class=\"scenario\">").append("<p style=\"color:" + scColor + ";\">").append("<b>Scenario</b>:  ").append(scenarioName).append(" - ").append(scenarioStatus.toUpperCase()).append("</p></div>");
-	            }
+        // Generate test summary table
+        htmlBuilder.append("<h2>Test Summary</h2>\n");
+        htmlBuilder.append("<table border='1' style='border-collapse: collapse;'>\n");
+        htmlBuilder.append("<thead><tr><th>Type</th><th>Total Count</th><th>Total Passed</th><th>Total Failed</th></tr></thead>\n");
+        htmlBuilder.append("<tbody><tr><td>Features</td><td>").append(totalFeatures).append("</td><td>").append(totalPassedFeatures).append("</td><td>").append(totalFailedFeatures).append("</td></tr></tbody>\n");
+        htmlBuilder.append("<tbody><tr><td>Scenarios</td><td>").append(totalScenarios).append("</td><td>").append(totalPassedScenarios).append("</td><td>").append(totalFailedScenarios).append("</td></tr></tbody>\n");
+        htmlBuilder.append("<tbody><tr><td>Steps</td><td>").append(totalSteps).append("</td><td>").append(totalPassedSteps).append("</td><td>").append(totalFailedSteps).append("</td></tr></tbody>\n");
+        htmlBuilder.append("</table>\n");
 
-	            // Close feature div
-	            htmlBuilder.append("</div>");
+        // Save HTML report to file
+        BufferedWriter writer = new BufferedWriter(new FileWriter(HTML_FILE_PATH));
+        writer.write(htmlBuilder.toString());
+        writer.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
-	            // Reset color for next feature
-	            scColor = "green";
-	        }
-
-	        // Generate feature summary table
-	        htmlBuilder.append("<h2>Feature Summary</h2>");
-	        htmlBuilder.append("<table border=\"1\">");
-	        htmlBuilder.append("<tr>");
-	        htmlBuilder.append("<th>Total Features</th>");
-	        htmlBuilder.append("<th>Passed</th>");
-	        htmlBuilder.append("<th>Failed</th>");
-	        htmlBuilder.append("</tr>");
-	        htmlBuilder.append("<tr>");
-	        htmlBuilder.append("<td>").append(totalFeatures).append("</td>");
-	        htmlBuilder.append("<td>").append(totalFeaturesPassed).append("</td>");
-	        htmlBuilder.append("<td>").append(totalFeaturesFailed).append("</td>");
-	        htmlBuilder.append("</tr>");
-	        htmlBuilder.append("</table>");
-
-	        // Generate scenario summary table
-	        htmlBuilder.append("<h2>Scenario Summary</h2>");
-	        htmlBuilder.append("<table border=\"1\">");
-	        htmlBuilder.append("<tr>");
-	        htmlBuilder.append("<th>Total Scenarios</th>");
-	        htmlBuilder.append("<th>Passed</th>");
-	        htmlBuilder.append("<th>Failed</th>");
-	        htmlBuilder.append("</tr>");
-	        htmlBuilder.append("<tr>");
-	        htmlBuilder.append("<td>").append(totalScenarios).append("</td>");
-	        htmlBuilder.append("<td>").append(totalScenariosPassed).append("</td>");
-	        htmlBuilder.append("<td>").append(totalScenariosFailed).append("</td>");
-	        htmlBuilder.append("</tr>");
-	        htmlBuilder.append("</table>");
-
-	        return htmlBuilder.toString();
-	    }
-
-
-	    private  void storeHtmlToFile(String htmlContent, String filePath) {
-	        try (FileWriter writer = new FileWriter(filePath)) {
-	            writer.write(htmlContent);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	}
+}
