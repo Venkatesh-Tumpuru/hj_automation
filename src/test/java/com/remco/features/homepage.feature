@@ -1,4 +1,4 @@
-Feature: This feature is to validate all the scenarios related to Home Page
+Feature: Validate all the scenarios related to Home Page
  
  @login
 	Scenario: Login to the HighJump Application with the correct credentials.
