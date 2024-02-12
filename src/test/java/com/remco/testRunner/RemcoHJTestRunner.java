@@ -76,7 +76,7 @@ public  void generateHTMLReport() {
 
         // Header
         htmlBuilder.append("<header style='border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'><p>Hi Team,</br>Greetings for the day.</br></br>Please find the below Automation status report</p></header>");
-        htmlBuilder.append("<h2 style='text-align:center;margin-bottom:20px;'>Automation Test Report - "+actulaTime+"</h2>");
+        htmlBuilder.append("<h2 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;''>Automation Test Report - "+actulaTime+"</h2>");
 
         for (JsonElement featureElement : features) {
             totalFeatures++; // Increment total features count
@@ -86,7 +86,7 @@ public  void generateHTMLReport() {
             boolean hasFailedScenario = false;
 
             htmlBuilder.append("<table>");
-            htmlBuilder.append("<tr><th colspan='2'>").append(featureName).append("</th></tr>");
+            htmlBuilder.append("<tr><th colspan='2'> Feature: ").append(featureName).append("</th></tr>");
 
             for (JsonElement scenarioElement : scenarios) {
                 totalScenarios++; // Increment total scenarios count
@@ -96,7 +96,7 @@ public  void generateHTMLReport() {
                 boolean hasFailedStep = false;
 
                 htmlBuilder.append("<tr>");
-                htmlBuilder.append("<td>").append(scenarioName).append("</td>");
+                htmlBuilder.append("<td> Scenario: ").append(scenarioName).append("</td>");
 
                 for (JsonElement stepElement : steps) {
                     totalSteps++; // Increment total steps count
@@ -133,7 +133,7 @@ public  void generateHTMLReport() {
         }
 
         // Generate test summary table
-        htmlBuilder.append("<h3 style='text-align:center;margin-bottom:20px;'>Test Summary</h3>");
+        htmlBuilder.append("</br><h3 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;''>Test Summary</h3></br>");
         htmlBuilder.append("<table>");
         htmlBuilder.append("<tr><th>Type</th><th>Total Count</th><th>Total Passed</th><th>Total Failed</th></tr>");
         htmlBuilder.append("<tr><td>Features</td><td>").append(totalFeatures).append("</td><td>").append(totalPassedFeatures).append("</td><td>").append(totalFailedFeatures).append("</td></tr>");
