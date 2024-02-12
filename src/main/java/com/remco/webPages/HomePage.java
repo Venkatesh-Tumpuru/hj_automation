@@ -6,8 +6,8 @@ public class HomePage extends BasePage_Remco implements HomePageLocators {
 	public void logInToUI() throws Exception {
 		String userName;
 		String password;
-		userName	=(System.getProperty("username"))!=null?System.getProperty("username"):getPropValue("hj_userId");
-		password=(System.getProperty("password"))!=null?System.getProperty("password"):getPropValue("hj_password");
+		userName	=System.getProperty("Dusername",getPropValue("hj_userId"));
+		password	=System.getProperty("Dpassword",getPropValue("hj_password"));
 		
 		page.locator(hp_userName).type(userName);
 		page.locator(hp_password).type(password);
