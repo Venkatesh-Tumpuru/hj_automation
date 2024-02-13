@@ -1,4 +1,5 @@
 package com.remco.webPages;
+
 import com.microsoft.playwright.options.SelectOption;
 import com.remco.ElementLocators.HomePageLocators;
 
@@ -19,6 +20,7 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 		//check for Terminal In Use
 		String terminalInUseMsg		=page.querySelector(rf_terminalInUse_msg).textContent();
 		expectedToBeFalse((terminalInUseMsg.equalsIgnoreCase(terminalInUse_Txt)), "Can't login, as the terminal is in use.");
+
 	}
 	
 	public void loginToRF() {
