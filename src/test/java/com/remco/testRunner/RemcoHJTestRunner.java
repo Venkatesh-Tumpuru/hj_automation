@@ -77,7 +77,8 @@ public  void generateHTMLReport() {
         int totalSkippedSteps = 0;
 
         htmlBuilder.append("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>HJ Remo Automation Test Report</title>");
-        htmlBuilder.append("<style>table {border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;} th, td {border: 1px solid #dddddd;text-align: left;padding: 8px;}th {background-color: #f2f2f2;}</style>");
+        htmlBuilder.append("<style>table {border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;} th, td {border: 1px solid #bcbcbc;text-align: left;padding: 8px;}th {background-color: #f2f2f2;}</style>");
+        htmlBuilder.append("<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css\">");
         htmlBuilder.append("</head><body>");
 
         // Header
@@ -91,10 +92,12 @@ public  void generateHTMLReport() {
             JsonObject feature = featureElement.getAsJsonObject();
             String featureName = feature.get("name").getAsString();
             JsonArray scenarios = feature.getAsJsonArray("elements");
+            String iconColor = "#2BF96D";
+            String iconType	 = "\"fas fa-check-circle\"";	
             boolean hasFailedScenario = false;
 
-            htmlBuilder.append("<table>");
-            htmlBuilder.append("<tr><th colspan='2'> Feature: ").append(featureName).append("</th></tr>");
+            htmlBuilder.append("<table id=>");
+            
 
             for (JsonElement scenarioElement : scenarios) {
                 totalScenarios++; // Increment total scenarios count
@@ -103,8 +106,7 @@ public  void generateHTMLReport() {
                 JsonArray steps = scenario.getAsJsonArray("steps");
                 boolean hasFailedStep = false;
 
-                htmlBuilder.append("<tr>");
-                htmlBuilder.append("<td> Scenario: ").append(scenarioName).append("</td>");
+                
 
                 for (JsonElement stepElement : steps) {
                     totalSteps++; // Increment total steps count
@@ -113,6 +115,9 @@ public  void generateHTMLReport() {
                     String status = result.get("status").getAsString();
                     if (status.equalsIgnoreCase("failed")) {
                         hasFailedStep = true;
+                        iconColor="#F9502B";
+                        iconType="\"fas fa-times-circle\"";
+ 
                         totalFailedSteps++; // Increment total failed steps count
                     } else if (status.equalsIgnoreCase("passed")) {
                         totalPassedSteps++; // Increment total passed steps count
@@ -121,7 +126,9 @@ public  void generateHTMLReport() {
                         totalSkippedSteps++; // Increment total passed steps count
                     }
                 }
-
+                htmlBuilder.append("<tr><th colspan='2'>").append("<i class="+iconType+" style='color:"+iconColor+";'").append("></i>").append(" <b>Feature: </b>").append(featureName).append("</th></tr>");
+                htmlBuilder.append("<tr>");
+                htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</td>");
                 if (hasFailedStep) {
                     totalFailedScenarios++;
                     hasFailedScenario = true;
@@ -142,7 +149,6 @@ public  void generateHTMLReport() {
 
             htmlBuilder.append("</table>");
         }
-
         // Generate test summary table
         htmlBuilder.append("</br><h3 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'>Test Summary</h3>");
         htmlBuilder.append("<table>");
