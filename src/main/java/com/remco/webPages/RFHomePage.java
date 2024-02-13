@@ -1,10 +1,10 @@
 package com.remco.webPages;
 
+import org.testng.Assert;
+
 import com.microsoft.playwright.options.SelectOption;
 
-import org.testng.Assert.assertFalse;
 
-import com.microsoft.playwright.*;
 import com.remco.ElementLocators.HomePageLocators;
 
 public class RFHomePage extends BasePage_Remco implements HomePageLocators {
@@ -23,10 +23,7 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 		
 		//check for Terminal In Use
 		String terminalInUseMsg		=page.querySelector(rf_terminalInUse_msg).textContent();
-		assertFalse((terminalInUseMsg.equalsIgnoreCase(terminalInUse_Txt)), "Can't login as the terminal is in use.");
-		
-		
-		
+		Assert.assertFalse((terminalInUseMsg.equalsIgnoreCase(terminalInUse_Txt)), "Can't login, as the terminal is in use.");
 	}
 	
 	public void loginToRF() {
