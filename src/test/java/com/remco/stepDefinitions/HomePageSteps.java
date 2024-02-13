@@ -5,10 +5,10 @@ import com.remco.webPages.HomePage;
 
 import io.cucumber.java.en.*;
 public class HomePageSteps extends HomePage implements HomePageLocators {
-		@Given("User launches HighJump application")
+		@Given("user launches HighJump application")
 	public void launchApplication() throws Exception {
 		launchBrowser();
-		loadUrl();
+		loadHJUrl();
 	}
 	
 	@Then("user login into the application")

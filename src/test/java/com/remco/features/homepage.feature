@@ -1,7 +1,7 @@
-Feature: Validate all the scenarios related to Home Page
+Feature: HPHJFRPLW01_Validate HighJump and RF Device functionalities
  
  @login
-	Scenario: Login to the HighJump Application with the correct credentials.
-	Given User launches HighJump application
+	Scenario: HPHJSCPLW01_Login to the HighJump Application with valid credentials.
+	Given user launches HighJump application
 	Then user login into the application
 	Then user logout from the application

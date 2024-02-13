@@ -119,9 +119,14 @@
 					<configuration>
 						<systemPropertyVariables>
 							<browser>${Dbrowser}</browser>
+							<url>${Durl}</url>
 							<username>${Dusername}</username>
 							<password>${Dpassword}</password>
-							<url>${Durl}</url>
+							<rf_Url>${Drf_Url}</rf_Url>
+							<rf_serverName>${Drf_serverName}</rf_serverName>
+							<rf_portNumber>${Drf_portNumber}</rf_portNumber>
+							<rf_deviceName>${Drf_deviceName}</rf_deviceName>
+							<rf_screenSize>${Drf_screenSize}</rf_screenSize>
 						</systemPropertyVariables>
 						<suiteXmlFiles>
 							<suiteXmlFile>testng.xml</suiteXmlFile>

@@ -6,7 +6,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import org.testng.annotations.*;
 
@@ -31,12 +35,13 @@ public class RemcoHJTestRunner extends AbstractTestNGCucumberTests {
     static String JSON_FILE_PATH = "target/cucumber-reports/cucumber.json";
     static String HTML_FILE_PATH = "target/cucumber-reports/cucumber.html";
     
-    Date date = new Date(); 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-    SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-    String formattedDate = dateFormat.format(date);
-    String formattedTime = timeFormat.format(date);
-    String actulaTime	= formattedDate+" ("+formattedTime+")";
+    LocalDateTime currentTimeEST 	= LocalDateTime.now(ZoneId.of("America/New_York"));
+    DateTimeFormatter formatterEST 	= DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mma", Locale.ENGLISH);
+    String formattedTimeEST 		= currentTimeEST.format(formatterEST);
+    
+    LocalDateTime currentTimeIST 	= LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+    DateTimeFormatter formatterIST 	= DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mma", Locale.ENGLISH);
+    String formattedTimeIST 		= currentTimeIST.format(formatterIST);
 
 @AfterSuite(alwaysRun=true)
 public  void generateHTMLReport() {
@@ -69,14 +74,17 @@ public  void generateHTMLReport() {
         int totalSteps = 0;
         int totalPassedSteps = 0;
         int totalFailedSteps = 0;
+        int totalSkippedSteps = 0;
 
-        htmlBuilder.append("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Cucumber Report</title>");
+        htmlBuilder.append("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>HJ Remo Automation Test Report</title>");
         htmlBuilder.append("<style>table {border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;} th, td {border: 1px solid #dddddd;text-align: left;padding: 8px;}th {background-color: #f2f2f2;}</style>");
         htmlBuilder.append("</head><body>");
 
         // Header
-        htmlBuilder.append("<header style='border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'><p>Hi Team,</br>Greetings for the day.</br></br>Please find the below Automation status report</p></header>");
-        htmlBuilder.append("<h2 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;''>Automation Test Report - "+actulaTime+"</h2>");
+        htmlBuilder.append("<header style='border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'><p>Hi Team,</br>Greetings for the day.</br></br>Please find the below Automation status report </p></header>");
+        htmlBuilder.append("<p style='border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'><b>Report Date EST: </b>").append(formattedTimeEST).append("</p>");
+        htmlBuilder.append("<p style='border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'><b>Report Date IST: </b>").append(" "+formattedTimeIST).append("</p></br>");
+        htmlBuilder.append("<h2 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'>Automation Test Report </h2>");
 
         for (JsonElement featureElement : features) {
             totalFeatures++; // Increment total features count
@@ -106,8 +114,11 @@ public  void generateHTMLReport() {
                     if (status.equalsIgnoreCase("failed")) {
                         hasFailedStep = true;
                         totalFailedSteps++; // Increment total failed steps count
-                    } else {
+                    } else if (status.equalsIgnoreCase("passed")) {
                         totalPassedSteps++; // Increment total passed steps count
+                    }
+                    else if (status.equalsIgnoreCase("skipped")) {
+                        totalSkippedSteps++; // Increment total passed steps count
                     }
                 }
 
@@ -133,12 +144,12 @@ public  void generateHTMLReport() {
         }
 
         // Generate test summary table
-        htmlBuilder.append("</br><h3 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;''>Test Summary</h3></br>");
+        htmlBuilder.append("</br><h3 style='margin-bottom:20px;border-collapse: collapse;width: 80%;max-width: 600px;margin: 0 auto;'>Test Summary</h3>");
         htmlBuilder.append("<table>");
-        htmlBuilder.append("<tr><th>Type</th><th>Total Count</th><th>Total Passed</th><th>Total Failed</th></tr>");
-        htmlBuilder.append("<tr><td>Features</td><td>").append(totalFeatures).append("</td><td>").append(totalPassedFeatures).append("</td><td>").append(totalFailedFeatures).append("</td></tr>");
-        htmlBuilder.append("<tr><td>Scenarios</td><td>").append(totalScenarios).append("</td><td>").append(totalPassedScenarios).append("</td><td>").append(totalFailedScenarios).append("</td></tr>");
-        htmlBuilder.append("<tr><td>Steps</td><td>").append(totalSteps).append("</td><td>").append(totalPassedSteps).append("</td><td>").append(totalFailedSteps).append("</td></tr>");
+        htmlBuilder.append("<tr><th>Type</th><th>Total Count</th><th style='background-color: #2BF96D;'>Total Passed</th><th style='background-color: #F9502B;'>Total Failed</th><th style='background-color: #03ADFC;'>Total Skipped</th></tr>");
+        htmlBuilder.append("<tr><td>Features</td><td>").append(totalFeatures).append("</td><td>").append(totalPassedFeatures).append("</td><td>").append(totalFailedFeatures).append("</td><td>-").append("</td></tr>");
+        htmlBuilder.append("<tr><td>Scenarios</td><td>").append(totalScenarios).append("</td><td>").append(totalPassedScenarios).append("</td><td>").append(totalFailedScenarios).append("</td><td>-").append("</td></tr>");
+        htmlBuilder.append("<tr><td>Steps</td><td>").append(totalSteps).append("</td><td>").append(totalPassedSteps).append("</td><td>").append(totalFailedSteps).append("</td><td>").append(totalSkippedSteps).append("</td></tr>");
         htmlBuilder.append("</table>");
 
         // Footer

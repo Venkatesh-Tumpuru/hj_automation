@@ -40,11 +40,18 @@ public class BasePage_Remco{
 		page	= context.newPage();
 	}
 	
-	public void loadUrl() throws Exception {
+	public void loadHJUrl() throws Exception {
 		String appUrl;
-		appUrl=(System.getProperty("url")!=null)? System.getProperty("url"):getPropValue("url");
+		appUrl=(System.getProperty("hjurl")!=null)? System.getProperty("hjurl"):getPropValue("hjurl");
 		page.navigate(appUrl);
 	}
+	
+	public void loadRFUrl() throws Exception {
+		String appUrl;
+		appUrl=(System.getProperty("rf_Url")!=null)? System.getProperty("rf_Url"):getPropValue("rf_url");
+		page.navigate(appUrl);
+	}
+	
 	
 	public void sendKeysToTheInputField(String locator,String value)
 	{
