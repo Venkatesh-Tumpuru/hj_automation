@@ -20,7 +20,7 @@ public class BasePage_Remco{
 		Playwright 	playwright	= Playwright.create();
 
 		String browserName;
-		browserName=(System.getProperty("browser")!=null)? System.getProperty("browser"):getPropValue("browser");
+		browserName=System.getProperty("Dbrowser",getPropValue("browser"));
 		boolean isHeadLess = Boolean.parseBoolean(getPropValue("headless"));
 
 		switch(browserName) {
