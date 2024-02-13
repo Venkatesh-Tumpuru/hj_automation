@@ -45,7 +45,18 @@ public class BasePage_Remco{
 		appUrl=(System.getProperty("hjurl")!=null)? System.getProperty("hjurl"):getPropValue("hjurl");
 		page.navigate(appUrl);
 	}
-	
+	public void expectedToBeFalse(boolean value,String message) throws Exception 
+	{
+		if(value==true) {
+			throw new Exception(message);
+		}
+	}
+	public void expectedToBeTrue(boolean value,String message) throws Exception 
+	{
+		if(value==true) {
+			throw new Exception(message);
+		}
+	}
 	public void loadRFUrl() throws Exception {
 		String appUrl;
 		appUrl=(System.getProperty("rf_Url")!=null)? System.getProperty("rf_Url"):getPropValue("rf_url");
