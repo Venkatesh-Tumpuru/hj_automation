@@ -2,7 +2,7 @@ package com.remco.webPages;
 
 import com.microsoft.playwright.options.SelectOption;
 
-import static org.testng.Assert.assertFalse;
+import org.testng.Assert.assertFalse;
 
 import com.microsoft.playwright.*;
 import com.remco.ElementLocators.HomePageLocators;
