@@ -117,7 +117,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.19.1</version>
 					<configuration>
-						<!--<systemPropertyVariables>
+						<systemPropertyVariables>
 							<browser>${Dbrowser}</browser>
 							<url>${Durl}</url>
 							<username>${Dusername}</username>
@@ -131,7 +131,7 @@
 							<rf_userID>${Drf_userID}</rf_userID>
 							<rf_userPassword>${Drf_userPassword}</rf_userPassword>
 							<rf_userEquipment>${Drf_userEquipment}</rf_userEquipment>
-						</systemPropertyVariables>-->
+						</systemPropertyVariables>
 
 						<suiteXmlFiles>
 							<suiteXmlFile>testng.xml</suiteXmlFile>
