@@ -19,12 +19,12 @@ public class RFDeviceSteps extends RFHomePage implements HomePageLocators {
 	
 	@Then("user login into RF Device")
 	public void rf_userLogin() throws Exception {
-		
+		loginToRF();
 	}
 	
 	@Then("user logout from RF Device")
-	public void rf_userLogout() {
-	
+	public void rf_userLogout() throws Exception {
+		logOutRF();
 	}
 
 }

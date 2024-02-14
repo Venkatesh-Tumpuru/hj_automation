@@ -96,7 +96,7 @@ public  void generateHTMLReport() {
             String iconType	 = "\"fas fa-check-circle\"";	
             boolean hasFailedScenario = false;
 
-            htmlBuilder.append("<table id=>");
+            htmlBuilder.append("<table>");
             
 
             for (JsonElement scenarioElement : scenarios) {
@@ -126,7 +126,7 @@ public  void generateHTMLReport() {
                         totalSkippedSteps++; // Increment total passed steps count
                     }
                 }
-                htmlBuilder.append("<tr><th colspan='2'>").append("<i class="+iconType+" style='color:"+iconColor+";'").append("></i>").append(" <b>Feature: </b>").append(featureName).append("</th></tr>");
+                htmlBuilder.append("<tr><th colspan='2'>").append("<i class="+iconType+" style='color:"+iconColor+";'").append("></i>").append(" <b style='color:"+iconColor+";'>Feature: </b>").append(featureName).append("</th></tr>");
                 htmlBuilder.append("<tr>");
                 htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</td>");
                 if (hasFailedStep) {
