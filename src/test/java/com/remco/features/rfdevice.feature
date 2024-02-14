@@ -1,4 +1,4 @@
-Feature: RFDHJFRPLW0_Validate HighJump and RF Device functionalities
+Feature: RFDHJFRPLW01_Validate HighJump and RF Device functionalities
  
  @login
 	Scenario: RFDHJSCPLW01_Login to the RF device with valid credentials.
