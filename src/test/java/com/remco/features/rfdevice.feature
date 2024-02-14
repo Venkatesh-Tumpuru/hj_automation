@@ -1,6 +1,6 @@
 Feature: RFDHJFRPLW01_Validate HighJump and RF Device functionalities
  
- @rflogin
+ @login
 	Scenario: RFDHJSCPLW01_Login to the RF device with valid credentials.
 	Given user launches RF Device WebTerminal
 	Then user provides the server details
