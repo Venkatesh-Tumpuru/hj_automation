@@ -133,7 +133,7 @@ public  void generateHTMLReport() {
                 htmlBuilder.append("<tr><th colspan='2'>").append("<i class="+iconType+" style='color:"+iconColor+";'").append("></i>").append(" <b style='color:"+iconColor+";'>Feature: </b>").append(featureName).append("</th></tr>");
                 htmlBuilder.append("<tr>");
                 if(errorMessage!="") {
-                	htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</br><p style='color:"+iconColor+";'padding:0;margin:0;>").append("<b> Failure Reason:</b>").append(errorMessage+"</p>").append("</td>");
+                	htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</br><p style='color:"+iconColor+";padding:0;margin:0;'>").append("<b> Failure Reason:</b>").append(errorMessage+"</p>").append("</td>");
                 }
                 else {
                 htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</td>");}
