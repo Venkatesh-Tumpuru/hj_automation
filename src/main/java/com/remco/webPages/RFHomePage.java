@@ -23,9 +23,9 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 		String terminalInUseMsg		=page.querySelector(loginChecks).textContent();
 		expectedToBeFalse((terminalInUseMsg.contains(terminalInUse_Txt)), "Can't login, as the terminal is in use.");
 		if(someOneUsing_Check()) {
-			throw new Exception("Someone already logged in and is in Log out confirm Screen");}
+			throw new Exception("RF screen is asking already logged user to confirm logout. Please choose another device.");}
 		if(isDeviceBeingUsed()) {
-			throw new Exception("Someone already logged in using the device. Please choose another device.");}
+			throw new Exception("Someone already logged in and using this"+devicename+"device. Please choose another device.");}
 	}
 	
 	public void loginToRF() throws Exception {
@@ -71,7 +71,7 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 			Thread.sleep(2000);
 			if(confirmLogOutScreen()) {break;}
 		}
-		expectedToBeTrue(!(isDeviceBeingUsed()),"Seems like device not logged out successfully.")
+		expectedToBeTrue(!(isDeviceBeingUsed()),"Seems like device not logged out successfully.");
 	}
 	
 	public boolean confirmLogOutScreen() {
