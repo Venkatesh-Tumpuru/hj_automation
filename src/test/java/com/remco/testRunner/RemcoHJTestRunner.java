@@ -95,6 +95,8 @@ public  void generateHTMLReport() {
             String iconColor = "#2BF96D";
             String iconType	 = "\"fas fa-check-circle\"";	
             boolean hasFailedScenario = false;
+            String errorMessage="";
+            String erroredStep="";
 
             htmlBuilder.append("<table>");
             
@@ -114,6 +116,9 @@ public  void generateHTMLReport() {
                     JsonObject result = step.getAsJsonObject("result");
                     String status = result.get("status").getAsString();
                     if (status.equalsIgnoreCase("failed")) {
+                    	errorMessage= step.getAsJsonObject("result").get("error_message").getAsString();
+                    	errorMessage=errorMessage.substring(errorMessage.indexOf(":")+1,errorMessage.indexOf("at"));
+                    	erroredStep= step.get("name").getAsString();
                         hasFailedStep = true;
                         iconColor="#F9502B";
                         iconType="\"fas fa-times-circle\"";
@@ -128,7 +133,11 @@ public  void generateHTMLReport() {
                 }
                 htmlBuilder.append("<tr><th colspan='2'>").append("<i class="+iconType+" style='color:"+iconColor+";'").append("></i>").append(" <b style='color:"+iconColor+";'>Feature: </b>").append(featureName).append("</th></tr>");
                 htmlBuilder.append("<tr>");
-                htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</td>");
+                if(errorMessage!="") {
+                	htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("<p style='color:"+iconColor+";padding:0;margin:0;'>").append("<b> Failed Step:</b>").append(erroredStep+"</p>").append("<p style='color:"+iconColor+";padding:0;margin:0;'>").append("<b> Failure Reason:</b>").append(errorMessage+"</p>").append("</td>");
+                }
+                else {
+                htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("</td>");}
                 if (hasFailedStep) {
                     totalFailedScenarios++;
                     hasFailedScenario = true;
