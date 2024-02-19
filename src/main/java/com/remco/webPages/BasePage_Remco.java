@@ -53,7 +53,7 @@ public class BasePage_Remco{
 	}
 	public void expectedToBeTrue(boolean value,String message) throws Exception 
 	{
-		if(value==true) {
+		if(value==false) {
 			throw new Exception(message);
 		}
 	}

@@ -22,15 +22,13 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 		//check for Terminal In Use
 		String terminalInUseMsg		=page.querySelector(loginChecks).textContent();
 		expectedToBeFalse((terminalInUseMsg.contains(terminalInUse_Txt)), "Can't login, as the terminal is in use.");
-		
-		//Is User Logged into any device check
-		String loggedInUser 		=page.querySelector(loginChecks).textContent();
-		if(loggedInUser.contains("LOG OFF")) {
-		expectedToBeFalse(!(loggedInUser.isEmpty()), "Please '"+loggedInUser+"'.");}
-		//Any user logged into the device
-		else if(loggedInUser.contains("IN USE BY")) {
-		expectedToBeFalse(!(loggedInUser.isEmpty()), "can't login to this device, as it is '"+loggedInUser+"'.");}
-		
+		if(someOneUsing_Check()) {
+			throw new Exception("RF screen is asking already logged user to confirm logout. Please choose another device.");}
+		if(isDeviceBeingUsed()) {
+			throw new Exception("Someone already logged in and using this"+devicename+"device. Please choose another device.");}
+	}
+	
+	public void loginToRF() throws Exception {
 		//Is Logout Confirm Page displayed
 		String logOutConfirmTextMsg	=page.querySelector(loginChecks).textContent();
 		if(logOutConfirmTextMsg.contains(logoutConfirmTxt)) {
@@ -38,13 +36,8 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 			inputBox.evaluate("input => input.value = ''");
 			page.locator(rf_inputBox).type("Y");
 			page.locator(rf_submit_btn).click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 		}
-		
-
-	}
-	
-	public void loginToRF() throws Exception {
 		String rfUserName	= System.getProperty("Drf_userID",getPropValue("rf_userId"));
 		String rfPassword	= System.getProperty("Drf_userPassword",getPropValue("rf_userPassword"));
 		String rfEquipment	= System.getProperty("Drf_userEquipment",getPropValue("rf_userEquipment"));
@@ -54,8 +47,19 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 		inputBox.evaluate("input => input.value = ''");
 		page.locator(rf_inputBox).type(inputValuesArray[counter]);
 		page.locator(rf_submit_btn).click();
-		Thread.sleep(1000);}
-
+		Thread.sleep(1000);
+		String loggedInUser 		=page.querySelector(loginChecks).textContent();
+		if(counter==0) {
+			//Any user logged into the device
+			if(loggedInUser.contains("IN USE BY")) {
+			String inUseBy	=loggedInUser.substring(loggedInUser.indexOf("IN"),loggedInUser.indexOf("USER")).trim();
+			expectedToBeFalse(loggedInUser.contains("IN USE BY"), "can't login to this device, as it is '"+inUseBy+"'.");}}
+		if(counter==1) {
+			//Is User Logged into any device check
+			if(loggedInUser.contains("LOG OFF")) {
+			String devicename	=loggedInUser.substring(loggedInUser.indexOf("LOG"),loggedInUser.indexOf("USER")).trim();;
+			expectedToBeFalse(loggedInUser.contains("LOG OFF"), "Please '"+devicename+"'device.");}}
+		}
 	}
 	
 	public void logOutRF() throws Exception {
@@ -65,12 +69,33 @@ public class RFHomePage extends BasePage_Remco implements HomePageLocators {
 			page.locator(rf_inputBox).type("F1");
 			page.locator(rf_submit_btn).click();
 			Thread.sleep(2000);
+			if(confirmLogOutScreen()) {break;}
+		}
+		expectedToBeTrue(!(isDeviceBeingUsed()),"Seems like device not logged out successfully.");
+	}
+	
+	public boolean confirmLogOutScreen() {
 		String logOutConfirmTextMsg	=page.querySelector(loginChecks).textContent();
 		if(logOutConfirmTextMsg.contains(logoutConfirmTxt)) {
-			inputBox.evaluate("input => input.value = ''");
+			ElementHandle logoutConfirmBox= page.querySelector(rf_inputBox);
+			logoutConfirmBox.evaluate("input => input.value = ''");
 			page.locator(rf_inputBox).type("Y");
 			page.locator(rf_submit_btn).click();
-			break;}
-		}
+			return true;}
+		else {return false;}
+	}
+	
+	public boolean someOneUsing_Check() {
+		String rfBody	=page.querySelector(loginChecks).textContent();
+		if(rfBody.contains(logoutConfirmTxt)) {
+			return true;}
+		else {return false;}
+	}
+	
+	public boolean isDeviceBeingUsed() {
+		String rfBody	=page.querySelector(loginChecks).textContent();
+		if((rfBody.contains("USER ID"))) {
+			return false;}
+		else {return true;}
 	}
 }
