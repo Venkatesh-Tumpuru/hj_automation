@@ -21,5 +21,31 @@ public class HomePageSteps extends HomePage implements HomePageLocators {
 		logOut();
 	}
 	
+	@Then("user imports an order")
+	public void createOrder() throws Exception {
+		connectToDB();
+	}
+	
+	@Then("user creates a wave using the order")
+	public void createWave() {
+		
+	}
+	
+	@Then("user releases the wave")
+	public void releaseWave() {
+		
+	}
+	
+	@Then("user verifies wave condition based on wave color")
+	public void verifyWaveCondition() {
+		
+	}
+	
+	@Then("user verifies wave status in t_pick_detail")
+	public void verifyWaveStatus() {
+		
+	}
+	
+	
 	
 }

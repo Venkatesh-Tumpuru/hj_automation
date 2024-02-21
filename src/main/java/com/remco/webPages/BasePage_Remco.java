@@ -2,6 +2,11 @@ package com.remco.webPages;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
@@ -92,5 +97,32 @@ public class BasePage_Remco{
 			}
 		return configProp;
 		}
+	public void connectToDB() throws Exception {
+		String servername,dbName;
+		servername=(System.getProperty("db_serverName")!=null)? System.getProperty("db_serverName"):getPropValue("db_servername");
+		dbName=(System.getProperty("db_Name")!=null)? System.getProperty("db_Name"):getPropValue("db_name");
+		 // JDBC URL for SQL Server with Windows authentication
+        String jdbcUrl = "jdbc:sqlserver://"+servername+":1433;databaseName="+dbName+";integratedSecurity=true";
+        
+        // Establishing the connection
+        try{
+        	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        	Connection connection = DriverManager.getConnection(jdbcUrl);
+        	if (connection != null) {
+        		  Statement stmt=connection.createStatement();
+                  ResultSet resultSet=stmt.executeQuery("SELECT top 1order_number from t_pick_detail where order_number like 'MIL.LD%'");
+                  while (resultSet.next()) {
+                      // Accessing data from the result set
+                      String orderNumber = resultSet.getString("order_number");                 
+                      // Process retrieved data, for example:
+                      System.err.println("order_number: " + orderNumber);
+                  }               }
+        	else {
+                System.out.println("Failed to make connection!");}
+        	} 
+        catch (SQLException e) {
+            System.err.println("Connection failed! Error message: " + e.getMessage());
+            }
+        }
 
 }

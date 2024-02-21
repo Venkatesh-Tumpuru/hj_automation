@@ -85,6 +85,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>7.0.0.jre8</version>
+		</dependency>
+
+		
+		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit</artifactId>
 			<version>6.9.1</version>
@@ -131,6 +138,8 @@
 							<rf_userID>${Drf_userID}</rf_userID>
 							<rf_userPassword>${Drf_userPassword}</rf_userPassword>
 							<rf_userEquipment>${Drf_userEquipment}</rf_userEquipment>
+							<db_serverName>${Ddb_serverName}</db_serverName>
+							<db_Name>${Ddb_Name}</db_Name>
 						</systemPropertyVariables>
 
 						<suiteXmlFiles>
