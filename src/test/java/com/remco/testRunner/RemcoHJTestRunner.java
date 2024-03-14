@@ -27,7 +27,7 @@ import io.cucumber.testng.CucumberOptions;
 		glue		=	{"com/remco/stepDefinitions"},
 		plugin		=	{"pretty",
 						 "json:target/cucumber-reports/Cucumber.json"},
-		tags		=	"@vt",
+		tags		=	"@pipeline",
 		monochrome	= 	true
 		)
 @Test
@@ -99,7 +99,8 @@ public  void generateHTMLReport() {
             String erroredStep="";
 
             htmlBuilder.append("<table>");
-            
+            htmlBuilder.append("<tr><th colspan='2'>").append(" <b>Feature: </b>").append(featureName).append("</th></tr>");
+            htmlBuilder.append("<tr>");
 
             for (JsonElement scenarioElement : scenarios) {
                 totalScenarios++; // Increment total scenarios count
@@ -131,8 +132,7 @@ public  void generateHTMLReport() {
                         totalSkippedSteps++; // Increment total passed steps count
                     }
                 }
-                htmlBuilder.append("<tr><th colspan='2'>").append("<i class="+iconType+" style='color:"+iconColor+";'").append("></i>").append(" <b style='color:"+iconColor+";'>Feature: </b>").append(featureName).append("</th></tr>");
-                htmlBuilder.append("<tr>");
+             
                 if(errorMessage!="" && erroredStep!="") {
                 	htmlBuilder.append("<td> <b>Scenario: </b>").append(scenarioName).append("<p style='color:"+iconColor+";padding:0;margin:0;'>").append("<b> Failed Step:</b>").append(erroredStep+"</p>").append("<p style='color:"+iconColor+";padding:0;margin:0;'>").append("<b> Failure Reason:</b>").append(errorMessage+"</p>").append("</td>");}
                 else {
