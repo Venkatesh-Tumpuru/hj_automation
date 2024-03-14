@@ -102,7 +102,7 @@ public class BasePage_Remco{
 		servername=(System.getProperty("db_serverName")!=null)? System.getProperty("db_serverName"):getPropValue("db_servername");
 		dbName=(System.getProperty("db_Name")!=null)? System.getProperty("db_Name"):getPropValue("db_name");
 		 // JDBC URL for SQL Server with Windows authentication
-        //String jdbcUrl = "jdbc:sqlserver://"+servername+":1433;databaseName="+dbName+";integratedSecurity=true";
+        //String jdbcUrl = "jdbc:sqlserver://["+servername+"]:1433;databaseName="+dbName+";integratedSecurity=true";
 		String jdbcUrl = "jdbc:sqlserver://"+servername+":1433;user=HJS;password=HJSPASS#1A;database="+dbName;
         
         // Establishing the connection
