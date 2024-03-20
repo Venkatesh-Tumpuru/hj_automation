@@ -27,7 +27,7 @@ import io.cucumber.testng.CucumberOptions;
 		glue		=	{"com/remco/stepDefinitions"},
 		plugin		=	{"pretty",
 						 "json:target/cucumber-reports/Cucumber.json"},
-		tags		=	"@pipeline",
+		tags		=	"@abc",
 		monochrome	= 	true
 		)
 @Test
@@ -119,6 +119,7 @@ public  void generateHTMLReport() {
                     if (status.equalsIgnoreCase("failed")) {
                     	errorMessage= step.getAsJsonObject("result").get("error_message").getAsString();
                     	errorMessage=errorMessage.substring(errorMessage.indexOf(":")+1,errorMessage.indexOf("at"));
+                    	errorMessage = errorMessage.contains("Timeout 30000ms exceeded")?"Timeout Exception":errorMessage;
                     	erroredStep= step.get("name").getAsString();
                         hasFailedStep = true;
                         iconColor="#F9502B";
@@ -127,6 +128,7 @@ public  void generateHTMLReport() {
                         totalFailedSteps++; // Increment total failed steps count
                     } else if (status.equalsIgnoreCase("passed")) {
                         totalPassedSteps++; // Increment total passed steps count
+                        errorMessage="";
                     }
                     else if (status.equalsIgnoreCase("skipped")) {
                         totalSkippedSteps++; // Increment total passed steps count
